@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "visionvoice"
+version = "2.0.0"
+description = "Real-time multimodal voice agent for accessibility (YOLOv8 + VLM + LLM agent + multilingual TTS)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "VisionVoice contributors" }]
+keywords = ["computer-vision", "llm", "agent", "accessibility", "yolov8", "multimodal", "tts"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Adaptive Technologies",
+]
+
+# Core deps kept tiny so the repo installs + tests run anywhere (mock backend).
+dependencies = [
+  "pydantic>=2.5",
+  "pydantic-settings>=2.1",
+  "typer>=0.12",
+  "rich>=13.7",
+  "numpy>=1.24",
+]
+
+[project.optional-dependencies]
+# Cloud backend
+anthropic = ["anthropic>=0.40"]
+# Local backend
+ollama = ["ollama>=0.3"]
+# Live vision
+vision = ["ultralytics>=8.2", "opencv-python>=4.9", "pillow>=10.2", "pytesseract>=0.3.10"]
+# Speech
+voice = ["gTTS>=2.5", "pyttsx3>=2.90", "SpeechRecognition>=3.10", "openai-whisper>=20231117"]
+# Web demo
+web = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
+# Dev
+dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.4"]
+all = [
+  "anthropic>=0.40", "ollama>=0.3",
+  "ultralytics>=8.2", "opencv-python>=4.9", "pillow>=10.2", "pytesseract>=0.3.10",
+  "gTTS>=2.5", "pyttsx3>=2.90", "SpeechRecognition>=3.10",
+  "fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9",
+]
+
+[project.scripts]
+visionvoice = "visionvoice.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/OWNER/visionvoice"
+Repository = "https://github.com/OWNER/visionvoice"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+visionvoice = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]  # typer uses function calls in defaults
+
+[tool.ruff.lint.per-file-ignores]
+# Long lines here are human-readable content, not logic:
+"src/visionvoice/web/server.py" = ["E501"]  # embedded HTML/JS page
+"src/visionvoice/cli.py" = ["E501"]         # rich console strings
+"tests/*" = ["E501"]                         # inline test fixtures
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

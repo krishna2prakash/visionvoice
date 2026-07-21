@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 300" font-family="system-ui, Segoe UI, sans-serif">
+  <style>
+    .box { fill:#f4f6f8; stroke:#2f6f4f; stroke-width:1.5; rx:8; }
+    .brain { fill:#eef3fb; stroke:#37546b; stroke-width:1.5; }
+    .lbl { font-size:13px; fill:#1c2b39; }
+    .sub { font-size:10.5px; fill:#5a6b78; }
+    .arrow { stroke:#2f6f4f; stroke-width:1.6; fill:none; marker-end:url(#a); }
+    .title { font-size:14px; font-weight:600; fill:#1c2b39; }
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#2f6f4f"/>
+    </marker>
+  </defs>
+
+  <text x="20" y="26" class="title">VisionVoice 2.0 — capture → detect → reason → speak</text>
+
+  <!-- Perception row -->
+  <rect class="box" x="20"  y="50" width="110" height="52" rx="8"/>
+  <text x="75" y="72" text-anchor="middle" class="lbl">Capture</text>
+  <text x="75" y="88" text-anchor="middle" class="sub">webcam / Pi / img</text>
+
+  <rect class="box" x="170" y="50" width="120" height="52" rx="8"/>
+  <text x="230" y="72" text-anchor="middle" class="lbl">Detect</text>
+  <text x="230" y="88" text-anchor="middle" class="sub">YOLOv8</text>
+
+  <rect class="box" x="330" y="50" width="150" height="52" rx="8"/>
+  <text x="405" y="72" text-anchor="middle" class="lbl">PerceptionSnapshot</text>
+  <text x="405" y="88" text-anchor="middle" class="sub">objects + image</text>
+
+  <path class="arrow" d="M130,76 L168,76"/>
+  <path class="arrow" d="M290,76 L328,76"/>
+
+  <!-- Agent brain -->
+  <rect class="brain" x="330" y="140" width="330" height="86" rx="10"/>
+  <text x="495" y="162" text-anchor="middle" class="lbl">Agent (LLM loop)  ·  observe → decide → act</text>
+  <text x="495" y="182" text-anchor="middle" class="sub">tools: list_objects · describe_scene (VLM)</text>
+  <text x="495" y="198" text-anchor="middle" class="sub">read_text (OCR) · assess_safety</text>
+  <text x="495" y="216" text-anchor="middle" class="sub">backend: anthropic | ollama | mock</text>
+  <path class="arrow" d="M405,102 L430,138"/>
+
+  <!-- Voice in -->
+  <rect class="box" x="20" y="150" width="110" height="52" rx="8"/>
+  <text x="75" y="172" text-anchor="middle" class="lbl">Voice in</text>
+  <text x="75" y="188" text-anchor="middle" class="sub">STT (whisper)</text>
+  <path class="arrow" d="M130,176 L328,180"/>
+
+  <!-- Speak out -->
+  <rect class="box" x="330" y="252" width="330" height="40" rx="8"/>
+  <text x="495" y="277" text-anchor="middle" class="lbl">Multilingual TTS  🔊  English · தமிழ் · മലയാളം</text>
+  <path class="arrow" d="M495,226 L495,250"/>
+
+  <!-- Latency note -->
+  <rect x="690" y="50" width="110" height="176" rx="8" fill="#fbf7ee" stroke="#a07a2c" stroke-width="1.3"/>
+  <text x="745" y="72" text-anchor="middle" class="lbl">Latency</text>
+  <text x="745" y="92" text-anchor="middle" class="sub">per-stage</text>
+  <text x="745" y="108" text-anchor="middle" class="sub">rolling avg</text>
+  <text x="745" y="130" text-anchor="middle" class="sub">capture</text>
+  <text x="745" y="146" text-anchor="middle" class="sub">detect</text>
+  <text x="745" y="162" text-anchor="middle" class="sub">reason</text>
+  <text x="745" y="178" text-anchor="middle" class="sub">speak</text>
+</svg>

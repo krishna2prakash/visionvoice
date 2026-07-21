@@ -1,0 +1,11 @@
+services:
+  visionvoice:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # Switch to anthropic + set VV_ANTHROPIC_API_KEY for the real VLM/agent.
+      VV_PROVIDER: ${VV_PROVIDER:-mock}
+      VV_ANTHROPIC_API_KEY: ${VV_ANTHROPIC_API_KEY:-}
+      VV_ANTHROPIC_MODEL: ${VV_ANTHROPIC_MODEL:-claude-sonnet-5}
+      VV_TTS_ENGINE: print

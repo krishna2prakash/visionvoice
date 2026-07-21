@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Env / secrets
+.env
+*.local
+
+# Models / weights (downloaded at runtime)
+*.pt
+*.onnx
+*.tflite
+models/
+
+# Media captured at runtime
+captures/
+*.wav
+*.mp3
+
+# Sample test images (keep the README, ignore actual photos)
+samples/*.jpg
+samples/*.jpeg
+samples/*.png
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
