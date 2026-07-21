@@ -51,8 +51,8 @@ all = [
 visionvoice = "visionvoice.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/OWNER/visionvoice"
-Repository = "https://github.com/OWNER/visionvoice"
+Homepage = "https://github.com/krishna2prakash/visionvoice"
+Repository = "https://github.com/krishna2prakash/visionvoice"
 
 [tool.setuptools.packages.find]
 where = ["src"]

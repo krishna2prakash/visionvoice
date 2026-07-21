@@ -13,7 +13,7 @@
   <a href="#"><img src="https://img.shields.io/badge/python-3.10%2B-blue" alt="python"></a>
   <a href="#"><img src="https://img.shields.io/badge/backend-cloud%20%7C%C2%A0local-brightgreen" alt="backend"></a>
   <a href="#"><img src="https://img.shields.io/badge/license-MIT-lightgrey" alt="license"></a>
-  <img src="https://github.com/OWNER/visionvoice/actions/workflows/ci.yml/badge.svg" alt="ci">
+  <img src="https://github.com/krishna2prakash/visionvoice/actions/workflows/ci.yml/badge.svg" alt="ci">
 </p>
 
 ---
@@ -56,7 +56,7 @@ deployment. That is deliberately how production ML systems are built.
 
 ```bash
 # 1. Clone + install (editable)
-git clone https://github.com/OWNER/visionvoice.git
+git clone https://github.com/krishna2prakash/visionvoice.git
 cd visionvoice
 py -m venv .venv && .venv\Scripts\activate      # Windows
 # python3 -m venv .venv && source .venv/bin/activate   # macOS/Linux
