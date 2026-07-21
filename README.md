@@ -111,6 +111,10 @@ VisionVoice uses **YOLO26** (Ultralytics, 2026) — its **NMS-free end-to-end in
 DFL-free export, and up to **43% faster CPU** make it purpose-built for edge devices like
 the Pi 5, with better small-object accuracy than YOLOv8/YOLO11.
 
+> **Versions:** `main` runs the current **YOLO26** model. The previous **YOLOv8**
+> implementation is preserved on the
+> [`yolov8`](https://github.com/krishna2prakash/visionvoice/tree/yolov8) branch.
+
 ```bash
 pip install -e ".[vision,voice]"
 export VV_PROVIDER=offline            # no keys, no network
