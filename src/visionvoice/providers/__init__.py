@@ -22,6 +22,10 @@ def build_provider(settings: Settings) -> ModelProvider:
         from visionvoice.providers.mock_provider import MockProvider
 
         return MockProvider(settings)
+    if name == "offline":
+        from visionvoice.providers.offline_provider import OfflineProvider
+
+        return OfflineProvider(settings)
     if name == "anthropic":
         from visionvoice.providers.anthropic_provider import AnthropicProvider
 

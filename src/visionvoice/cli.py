@@ -147,6 +147,97 @@ def serve(
 
 
 @app.command()
+def bench(
+    runs: int = typer.Option(50, help="Number of timed iterations."),
+    image: str = typer.Option(None, "--image", "-i", help="Image to benchmark on (else synthetic)."),
+    verbose: bool = typer.Option(False),
+) -> None:
+    """Measure on-device latency / FPS (detection + reasoning). Prints resume-ready metrics."""
+    import statistics
+    import time
+
+    _setup_logging(verbose)
+    settings = get_settings()
+    pipe = Pipeline(settings)
+
+    def _pct(values: list[float], q: float) -> float:
+        s = sorted(values)
+        idx = min(len(s) - 1, int(round(q * (len(s) - 1))))
+        return s[idx]
+
+    table = Table(title=f"VisionVoice on-device benchmark ({runs} runs)")
+    table.add_column("stage")
+    table.add_column("mean", justify="right")
+    table.add_column("p50", justify="right")
+    table.add_column("p95", justify="right")
+    table.add_column("throughput", justify="right")
+
+    # --- Detection latency (needs the vision extra) ---
+    detect_ms: list[float] = []
+    try:
+        import numpy as np
+
+        if image:
+            from visionvoice.capture import ImageFileSource
+
+            frame = ImageFileSource(image).read()
+        else:
+            frame = (np.random.rand(480, 640, 3) * 255).astype("uint8")
+        pipe.detector.detect(frame)  # warm-up (model load / first inference)
+        for _ in range(runs):
+            t0 = time.perf_counter()
+            pipe.detector.detect(frame)
+            detect_ms.append((time.perf_counter() - t0) * 1000)
+    except Exception as exc:
+        console.print(f"[yellow]Detection benchmark skipped:[/] {exc}")
+        console.print('[dim]Install the vision extra to benchmark YOLOv8: pip install -e ".[vision]"[/]')
+
+    if detect_ms:
+        mean = statistics.mean(detect_ms)
+        table.add_row(
+            "detect (YOLOv8)",
+            f"{mean:.0f} ms",
+            f"{_pct(detect_ms, 0.50):.0f} ms",
+            f"{_pct(detect_ms, 0.95):.0f} ms",
+            f"{1000 / mean:.1f} FPS",
+        )
+
+    # --- Reasoning latency (offline agent loop) ---
+    reason_ms: list[float] = []
+    pipe.answer("what's in front of me?", snapshot=_DEMO_SNAPSHOT, speak=False)  # warm-up
+    for _ in range(runs):
+        t0 = time.perf_counter()
+        pipe.answer("what's in front of me?", snapshot=_DEMO_SNAPSHOT, speak=False)
+        reason_ms.append((time.perf_counter() - t0) * 1000)
+    def _ms(v: float) -> str:
+        return f"{v * 1000:.0f} µs" if v < 1 else f"{v:.0f} ms"
+
+    mean_r = statistics.mean(reason_ms)
+    table.add_row(
+        "reason (agent)",
+        _ms(mean_r),
+        _ms(_pct(reason_ms, 0.50)),
+        _ms(_pct(reason_ms, 0.95)),
+        f"{1000 / mean_r:,.0f} q/s" if mean_r else "—",
+    )
+
+    # End-to-end (detect + reason) if we have both.
+    if detect_ms:
+        e2e = statistics.mean(detect_ms) + mean_r
+        table.add_row("end-to-end", f"{e2e:.0f} ms", "—", "—", f"{1000 / e2e:.1f} FPS")
+
+    console.print(table)
+
+    # Model footprint.
+    from pathlib import Path
+
+    weight = Path(settings.yolo_model)
+    size = f"{weight.stat().st_size / 1e6:.1f} MB" if weight.exists() else "not downloaded yet"
+    console.print(f"[dim]backend: {settings.provider}   model: {settings.yolo_model} ({size})[/]")
+    pipe.close()
+
+
+@app.command()
 def info() -> None:
     """Show resolved configuration and backend health."""
     settings = get_settings()

@@ -8,7 +8,7 @@ from typing import Literal
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-Provider = Literal["anthropic", "ollama", "mock"]
+Provider = Literal["anthropic", "ollama", "offline", "mock"]
 
 
 class Settings(BaseSettings):
