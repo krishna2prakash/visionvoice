@@ -22,7 +22,7 @@
 
   <rect class="box" x="170" y="50" width="120" height="52" rx="8"/>
   <text x="230" y="72" text-anchor="middle" class="lbl">Detect</text>
-  <text x="230" y="88" text-anchor="middle" class="sub">YOLOv8</text>
+  <text x="230" y="88" text-anchor="middle" class="sub">YOLO26</text>
 
   <rect class="box" x="330" y="50" width="150" height="52" rx="8"/>
   <text x="405" y="72" text-anchor="middle" class="lbl">PerceptionSnapshot</text>

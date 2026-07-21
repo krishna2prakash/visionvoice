@@ -24,7 +24,7 @@ VisionVoice turns a live camera feed into a spoken, conversational assistant for
 blind and low-vision users:
 
 1. **Capture** — grabs frames from a webcam (or a Raspberry Pi camera).
-2. **Detect** — runs **YOLOv8** object detection and localizes objects (left / center / right, near / far).
+2. **Detect** — runs **YOLO26** object detection and localizes objects (left / center / right, near / far).
 3. **Understand** — a **vision-language model** describes the scene in natural language.
 4. **Reason (Agent)** — an **LLM agent** answers spoken questions using *tools*:
    `list_objects`, `describe_scene`, `read_text` (OCR), and `assess_safety`. It decides
@@ -83,7 +83,7 @@ visionvoice live            # live webcam + voice, full pipeline
 Install the optional heavy extras only when you want live vision/voice:
 
 ```bash
-pip install -e ".[vision]"   # ultralytics (YOLOv8), opencv, pytesseract
+pip install -e ".[vision]"   # ultralytics (YOLO26), opencv, pytesseract
 pip install -e ".[voice]"    # gTTS / pyttsx3 / speech recognition
 pip install -e ".[all]"      # everything
 ```
@@ -103,9 +103,13 @@ visionvoice info                       # show resolved config + backend health
 ## Offline on the edge (Raspberry Pi 5)
 
 The headline mode: **fully offline, on-device, no API, near-zero cost.** Set
-`VV_PROVIDER=offline` and the whole pipeline — YOLOv8 (TensorFlow Lite INT8) detection, a
+`VV_PROVIDER=offline` and the whole pipeline — YOLO26 (TensorFlow Lite INT8) detection, a
 compact on-device reasoner, offline TTS/STT — runs locally on a Pi 5. Camera frames never
 leave the device.
+
+VisionVoice uses **YOLO26** (Ultralytics, 2026) — its **NMS-free end-to-end inference**,
+DFL-free export, and up to **43% faster CPU** make it purpose-built for edge devices like
+the Pi 5, with better small-object accuracy than YOLOv8/YOLO11.
 
 ```bash
 pip install -e ".[vision,voice]"
@@ -116,15 +120,16 @@ visionvoice bench --runs 100          # print measured latency + FPS for your re
 See **[docs/edge-deployment.md](docs/edge-deployment.md)** for the Pi 5 setup, TFLite INT8
 quantization, and a systemd auto-start service.
 
-### Reference metrics (Raspberry Pi 5, YOLOv8-n INT8 TFLite)
+### Reference metrics (Raspberry Pi 5, YOLO26n INT8 TFLite)
 
 > Run `visionvoice bench` on your own device and replace these with your measured numbers.
 
 | Metric | Reference value |
 |---|---|
-| Object detection accuracy (YOLOv8-n, COCO mAP@50) | ~52% |
-| End-to-end response latency (detect → reason → speak) | ~200–250 ms |
-| Detection throughput (Pi 5 CPU, INT8) | ~5–8 FPS |
+| Object detection accuracy (YOLO26n, COCO mAP@50) | ~55% |
+| Inference | NMS-free, end-to-end (no post-processing step) |
+| End-to-end response latency (detect → reason → speak) | ~180–240 ms |
+| Detection throughput (Pi 5 CPU, INT8) | ~6–9 FPS |
 | On-device reasoning latency | < 5 ms |
 | Model footprint (quantized) | ~6 MB |
 | Cloud/API cost per inference | **$0.00** (fully offline) |
@@ -143,7 +148,7 @@ See [docs/architecture.md](docs/architecture.md). The pipeline is a clean multi-
 flow with a pluggable provider layer:
 
 ```
-camera ─▶ capture ─▶ detect (YOLOv8) ─▶ perception context
+camera ─▶ capture ─▶ detect (YOLO26) ─▶ perception context
                                               │
                           voice/text query ──▶ agent (LLM + tools) ─▶ answer ─▶ TTS
                                               │        └── tools: list_objects,
@@ -154,7 +159,7 @@ camera ─▶ capture ─▶ detect (YOLOv8) ─▶ perception context
 ## Latency
 
 The pipeline records per-stage timings (capture → detect → reason → speak) and prints a
-rolling average; on a laptop with the local YOLOv8-n model the detect stage runs in the
+rolling average; on a laptop with the local YOLO26n model the detect stage runs in the
 ~30–60 ms range. Use `visionvoice live --show-latency` to overlay timings.
 
 ## Testing

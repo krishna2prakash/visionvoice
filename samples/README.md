@@ -7,7 +7,7 @@ visionvoice ask --image samples/your-photo.jpg "what's in front of me?"
 visionvoice describe --image samples/your-photo.jpg
 ```
 
-- With the **vision** extra installed (`pip install -e ".[vision]"`), YOLOv8 runs local
+- With the **vision** extra installed (`pip install -e ".[vision]"`), YOLO26 runs local
   object detection on the image.
 - With `VV_PROVIDER=anthropic` (or `ollama`), the vision-language model also describes the
   actual image.

@@ -5,7 +5,7 @@ per-request cost. The on-device stack is:
 
 | Stage | On-device component | Notes |
 |---|---|---|
-| Detect | **YOLOv8-n**, exported to **TensorFlow Lite (INT8)** | quantized for ARM; ~6 MB weights |
+| Detect | **YOLO26n**, exported to **TensorFlow Lite (INT8)** | quantized for ARM; ~6 MB weights |
 | Reason | **`offline` provider** | compact rule-based NLU + tool routing — no LLM weights |
 | Speak | **pyttsx3 / eSpeak-NG** | offline synthesis, multilingual |
 | Listen | **Whisper (tiny/base) or Vosk** | offline speech-to-text |
@@ -30,18 +30,18 @@ cp .env.example .env
 #   VV_PROVIDER=offline
 #   VV_TTS_ENGINE=pyttsx3
 #   VV_STT_ENGINE=whisper
-#   VV_YOLO_MODEL=yolov8n_int8.tflite
+#   VV_YOLO_MODEL=yolo26n_full_integer_quant.tflite
 ```
 
 ## 3. Export a quantized TFLite model (once, on any machine)
 
-TensorFlow Lite INT8 quantization is what brings YOLOv8 into real-time range on the Pi's
+TensorFlow Lite INT8 quantization is what brings YOLO26 into real-time range on the Pi's
 CPU and shrinks the model for the edge:
 
 ```bash
 pip install ultralytics
-yolo export model=yolov8n.pt format=tflite int8=True
-# produces yolov8n_full_integer_quant.tflite  → copy to the Pi and point VV_YOLO_MODEL at it
+yolo export model=yolo26n.pt format=tflite int8=True
+# produces yolo26n_full_integer_quant.tflite  → copy to the Pi and point VV_YOLO_MODEL at it
 ```
 
 Ultralytics runs the exported `.tflite` directly via `YOLO("model.tflite")`, so no code

@@ -41,7 +41,7 @@ class Settings(BaseSettings):
 
     # --- Perception ---
     camera_index: int = 0
-    yolo_model: str = "yolov8n.pt"
+    yolo_model: str = "yolo26n.pt"
     yolo_conf: float = Field(default=0.35, ge=0.0, le=1.0)
 
     # --- Speech ---

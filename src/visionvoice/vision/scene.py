@@ -2,7 +2,7 @@
 
 If the active provider has a real vision-language model, we caption the actual image.
 Otherwise (e.g. the mock/Ollama-text-only path) we synthesize a description from the
-YOLOv8 detections — so the pipeline always produces something useful to speak.
+YOLO26 detections — so the pipeline always produces something useful to speak.
 """
 
 from __future__ import annotations

@@ -1,4 +1,4 @@
-"""YOLOv8 object detection wrapper.
+"""YOLO26 object detection wrapper.
 
 Converts raw model output into :class:`~visionvoice.types.Detection` objects with a
 coarse, human-friendly location (left / center / right) and distance estimate derived
@@ -36,9 +36,9 @@ def area_to_distance(area: float) -> Distance:
 
 
 class Detector:
-    """Thin wrapper around an Ultralytics YOLOv8 model."""
+    """Thin wrapper around an Ultralytics YOLO26 model."""
 
-    def __init__(self, model_path: str = "yolov8n.pt", conf: float = 0.35) -> None:
+    def __init__(self, model_path: str = "yolo26n.pt", conf: float = 0.35) -> None:
         try:
             from ultralytics import YOLO
         except ImportError as exc:  # pragma: no cover - exercised only without the extra

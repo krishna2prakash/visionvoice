@@ -7,7 +7,7 @@ still supporting a real deployment.
 
 ```
                             ┌──────────────────────────────────────────┐
-   camera / image ──▶ capture ──▶ detect (YOLOv8) ──▶ PerceptionSnapshot │
+   camera / image ──▶ capture ──▶ detect (YOLO26) ──▶ PerceptionSnapshot │
                             └───────────────────────────────┬──────────┘
                                                             │
   voice / text query ─▶ STT ─▶ ┌──────────── Agent (LLM loop) ───────────┐
@@ -24,7 +24,7 @@ still supporting a real deployment.
 | Stage | Module | Responsibility |
 |---|---|---|
 | Capture | `capture.py` | Threaded webcam grab, Pi camera, or still image; JPEG encode for the VLM |
-| Detect | `detection.py` | YOLOv8 → `Detection` objects with direction + rough distance |
+| Detect | `detection.py` | YOLO26 → `Detection` objects with direction + rough distance |
 | Perceive | `types.py` | `PerceptionSnapshot` bundles detections + image bytes at one instant |
 | Reason | `agent/` | The LLM agent loop and its perception tools |
 | Understand | `vision/scene.py` | VLM caption, or a detection-derived summary as fallback |

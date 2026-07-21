@@ -1,7 +1,7 @@
 """The multi-stage pipeline: capture → detect → reason → speak.
 
 This orchestrates the whole assistant and is the single object the CLI and web server
-talk to. Heavy resources (camera, YOLOv8 model) are created lazily so a snapshot supplied
+talk to. Heavy resources (camera, YOLO26 model) are created lazily so a snapshot supplied
 from a still image or a test never spins up a camera.
 """
 

@@ -190,12 +190,12 @@ def bench(
             detect_ms.append((time.perf_counter() - t0) * 1000)
     except Exception as exc:
         console.print(f"[yellow]Detection benchmark skipped:[/] {exc}")
-        console.print('[dim]Install the vision extra to benchmark YOLOv8: pip install -e ".[vision]"[/]')
+        console.print('[dim]Install the vision extra to benchmark YOLO26: pip install -e ".[vision]"[/]')
 
     if detect_ms:
         mean = statistics.mean(detect_ms)
         table.add_row(
-            "detect (YOLOv8)",
+            "detect (YOLO26)",
             f"{mean:.0f} ms",
             f"{_pct(detect_ms, 0.50):.0f} ms",
             f"{_pct(detect_ms, 0.95):.0f} ms",
